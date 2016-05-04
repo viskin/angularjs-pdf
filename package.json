@@ -31,7 +31,8 @@
     "karma-jasmine": "^0.3.6",
     "karma-ng-html2js-preprocessor": "^0.2.0",
     "karma-phantomjs-launcher": "^0.2.1",
-    "phantomjs": "^1.9.19"
+    "phantomjs": "^1.9.19",
+    "grunt-typings": "0.1.4"
   },
   "dependencies": {
     "angular2": "2.0.0-beta.17",

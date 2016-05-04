@@ -117,6 +117,9 @@ module.exports = function(grunt) {
       unit: {
         configFile: 'test/karma.conf.js'
       }
+    },
+    typings: {
+      install: {}
     }
   });
 
@@ -128,6 +131,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jsonlint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-typings');
 
   grunt.registerTask('default', [
     'clean',
