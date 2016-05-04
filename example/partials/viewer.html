@@ -1,23 +1,23 @@
-<nav ng-class="getNavStyle(scroll)">
-  <button ng-click="goPrevious()"><</span></button>
-  <button ng-click="goNext()">></span></button>
+﻿<nav #element [ngClass]="getNavStyle(scroll)" (window:resize)="onResize($event)">
+  <button (click)="goPrevious()">&lt;</button>
+  <button (click)="goNext()">&gt;</button>
 
-  <button ng-click="zoomIn()">+</span></button>
-  <button ng-click="fit()">100%</span></button>
-  <button ng-click="zoomOut()">-</span></button>
+  <button (click)="zoomIn()">+</button>
+  <button (click)="fit()">100%</button>
+  <button (click)="zoomOut()">-</button>
 
-  <button ng-click="rotate()">90</span></button>
+  <button (click)="rotate()">90</button>
 
   <span>Page: </span>
-  <input type="text" min=1 ng-model="pageNum">
+  <input type="text" min=1 [(ngModel)]="pageNum">
   <span> / {{pageCount}}</span>
 
   &nbsp;&nbsp;
   <span>Document URL: </span>
-  <input type="text" ng-model="pdfUrl">
+  <input type="text" [(ngModel)]="pdfUrl">
 </nav>
 
 <hr>
 
 {{loading}}
-<canvas id="pdf" class="rotate0"></canvas>
+<canvas #pdf class="rotate0"></canvas>
