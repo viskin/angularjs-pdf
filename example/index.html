@@ -7,44 +7,30 @@
   <link rel="stylesheet" href="style.css">
   
   <!-- 1. Load libraries -->
-  <!-- IE required polyfills, in this exact order -->
-  <script src="../node_modules/es6-shim/es6-shim.min.js"></script>
-  <script src="../node_modules/systemjs/dist/system-polyfills.js"></script>
-  <script src="../node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>
+  <!-- Polyfill(s) for older browsers -->
+  <script src="node_modules/es6-shim/es6-shim.min.js"></script>
 
-  <script src="../node_modules/angular2/bundles/angular2-polyfills.js"></script>
-  <script src="../node_modules/systemjs/dist/system.src.js"></script>
-  <script src="../node_modules/rxjs/bundles/Rx.js"></script>
-  <script src="../node_modules/angular2/bundles/angular2.dev.js"></script>
-  <script src="../node_modules/angular2/bundles/router.dev.js"></script>
+  <script src="node_modules/zone.js/dist/zone.js"></script>
+  <script src="node_modules/reflect-metadata/Reflect.js"></script>
+  <script src="node_modules/systemjs/dist/system.src.js"></script>
 
   <script src="../node_modules/pdfjs-dist/build/pdf.js"></script>
 
   <!-- 2. Configure SystemJS -->
+  <script src="systemjs.config.js"></script>
   <script>
-      System.config({
-          packages: {
-              app: {
-                  format: 'register',
-                  defaultExtension: 'js'
-              }
-          }
-      });
-      System.import('app/main')
-            .then(null, console.error.bind(console));
-  </script>
+    System.import('app').catch(function(err){ console.error(err);  });
+  </script>  
   
 </head>
 <body>
 
-<div class="wrapper" ng-controller="DocCtrl">
-  <h1>{{pdfName}}</h1>
-  <ng-pdf template-url="partials/viewer.html" canvasid="pdf" scale="page-fit" page=13></ng-pdf>
-</div>
+<!-- 3. Display the application -->
+<body>
+    <my-app>Loading...</my-app>
+</body>
 
 <a href="https://github.com/sayanee/angularjs-pdf"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
-
-<script src="js/lib/pdf.js"></script>
 
 </body>
 </html>

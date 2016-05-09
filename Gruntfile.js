@@ -149,4 +149,10 @@ module.exports = function(grunt) {
     'jshint',
     'karma'
   ]);
+  
+  //TODO: move to default
+  grunt.registerTask('typings', 
+  [
+    'typings'
+  ]);
 };

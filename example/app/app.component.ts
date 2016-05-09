@@ -1,5 +1,6 @@
-import {Component, OnInit, ViewChild, AfterViewInit} from 'angular2/core';
-import {MyPdfJsComponent} from './my-angular-pdf.component';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+
+import { MyPdfJsComponent } from './my-angular-pdf.component';
 
 @Component({
     selector: 'my-app',

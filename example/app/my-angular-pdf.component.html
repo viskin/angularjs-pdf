@@ -1,0 +1,24 @@
+<nav #boundingElement [ngClass]="getNavStyle(scroll)">
+    <button (click)="pdf.goPrevious()">&lt;</button>
+    <button (click)="pdf.goNext()">&gt;</button>
+
+    <button (click)="pdf.zoomIn()">+</button>
+    <button (click)="pdf.fit()">100%</button>
+    <button (click)="pdf.zoomOut()">-</button>
+
+    <button (click)="pdf.rotate()">90</button>
+
+    <span>Page: </span>
+    <input type="text" min=1 [(ngModel)]="pdf.pageNum">
+    <span> / {{pdf.pageCount}}</span>
+
+    &nbsp;&nbsp;
+    <span>Document URL: </span>
+    <input type="text" [(ngModel)]="pdf.pdfUrl">
+</nav>
+
+<hr>
+
+{{loading}}
+<ng-pdf #pdf [boundingElement]="boundingElement" [scale]="scale" [page]="page"
+		(load)="onLoad()" (error)="onError($event)" (progress)="onProgress($event)" (pageRender)="onPageRender()"></ng-pdf>

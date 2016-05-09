@@ -1,7 +1,16 @@
-import {Component} from 'angular2/core';
-import {PdfJsComponent} from './angular-pdf.component';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 
-export class MyPdfJsComponent extends PdfJsComponent {
+import { PdfJsComponent } from './angular-pdf.component';
+
+@Component({
+    selector: 'my-ng-pdf',
+    //styleUrls: ['app/angular-pdfjs-style.css'],
+    templateUrl: 'app/my-angular-pdf.component.html',
+    directives: [PdfJsComponent]
+})
+export class MyPdfJsComponent implements AfterViewInit {
+
+    @ViewChild(PdfJsComponent) pdfComponent: PdfJsComponent;
 
     public pdfName = 'Relativity: The Special and General Theory by Albert Einstein'
 
@@ -11,9 +20,16 @@ export class MyPdfJsComponent extends PdfJsComponent {
 
     public loading = 'loading'
 
+    ngAfterViewInit() {
+        this.pdfComponent.scroll = 0;
+    }
+
     public getNavStyle(scroll: number) {
-        if (scroll > 100) return 'pdf-controls fixed';
-        else return 'pdf-controls';
+        let classes = {
+            'pdf-controls': true,
+            'fixed': scroll > 100
+        };
+        return classes;
     }
 
     public onError(error: any) {
@@ -26,6 +42,9 @@ export class MyPdfJsComponent extends PdfJsComponent {
 
     public onProgress(progressData: PDFProgressData) {
         console.log(progressData);
+    }
+
+    public onPageRender() {
     }
 
     public load(pdfUrl: string, pdfName: string) {

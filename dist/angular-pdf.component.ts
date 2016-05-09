@@ -1,56 +1,56 @@
 /*! Angular-PDF Version: 1.3.0 | Released under an MIT license */
 /* Converted to angular2 by Roman Viskin */
 
-import {Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef} from 'angular2/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef, EventEmitter, Output } from '@angular/core';
 
 @Component({
     selector: 'ng-pdf',
-    styleUrls: ['app/angular-pdfjs-style.css'],
-    templateUrl: 'app/viewer.html'
+    styleUrls: ['app/angular-pdf.component.css'],
+    templateUrl: 'app/angular-pdf.component.html'
 })
 export class PdfJsComponent implements OnInit, AfterViewInit {
 
-    @ViewChild('element') elementRef: ElementRef;
-    element: HTMLElement;
+    //@ViewChild('element') elementRef: ElementRef;
+    @Input() boundingElement: HTMLElement;
 
-    @ViewChild('pdf') canvasRef: ElementRef;
+    @ViewChild('pdfCanvas') canvasRef: ElementRef;
     canvas: HTMLCanvasElement;
 
-    private _pageNum: number
+    private _pageNum: number;
     public get pageNum(): number {
         return this._pageNum;
     }
 
-    @Input() page: number
+    @Input() page: number;
     
-    public scroll: number
+    public scroll: number;
 
     private _pdfUrl: string
     @Input() public get pdfUrl(): string {
         return this._pdfUrl;
     }
 
-    @Input() scale: number | string
+    @Input() scale: number | string;
 
-    public pageCount: number
+    public pageCount: number;
 
-    pageToDisplay: number
+    pageToDisplay: number;
 
-    private pdfDoc: PDFDocumentProxy = null
+    private pdfDoc: PDFDocumentProxy = null;
 
-    private ctx: CanvasRenderingContext2D = null
+    private ctx: CanvasRenderingContext2D = null;
 
-    private pageFit: boolean = false
+    private pageFit: boolean = false;
 
-    private renderTask: PDFRenderTask = null
+    private renderTask: PDFRenderTask = null;
 
-    private pdfLoaderTask: PDFPromise<PDFDocumentProxy> = null
+    private pdfLoaderTask: PDFPromise<PDFDocumentProxy> = null;
 
-    @Input() debug = false
+    @Input() debug = false;
 
-    @Input() usecredentials: boolean
+    @Input() usecredentials: boolean;
 
-    public httpHeaders
+    public httpHeaders;
 
     ngOnInit() {
     }
@@ -60,7 +60,7 @@ export class PdfJsComponent implements OnInit, AfterViewInit {
         //element.css('display', 'block');
         //var httpHeaders = scope.httpHeaders;
 
-        this.element = this.elementRef.nativeElement;
+        //this.element = this.elementRef.nativeElement;
         this.canvas = this.canvasRef.nativeElement;
 
         this.pageToDisplay = isFinite(this.page) ? this.page : 1;
@@ -120,7 +120,7 @@ export class PdfJsComponent implements OnInit, AfterViewInit {
 
             if (this.pageFit) {
                 viewport = page.getViewport(1);
-                var clientRect = this.element.getBoundingClientRect();
+                var clientRect = this.boundingElement.getBoundingClientRect();
                 pageWidthScale = clientRect.width / viewport.width;
                 this.scale = pageWidthScale;
             }
@@ -136,7 +136,7 @@ export class PdfJsComponent implements OnInit, AfterViewInit {
             this.renderTask = page.render(renderContext);
 
             this.renderTask.then(() => {
-                this.onPageRender();
+                this.pageRender.emit(null);
             }, (reason) => {
                 console.log(reason);
             });
@@ -208,17 +208,17 @@ export class PdfJsComponent implements OnInit, AfterViewInit {
         }
 
         if (this.pdfUrl && this.pdfUrl.length) {
-            this.pdfLoaderTask = PDFJS.getDocument(params, null, null, this.onProgress);
+            this.pdfLoaderTask = PDFJS.getDocument(params, null, null, (progressData: PDFProgressData) => this.progress.emit(progressData));
             this.pdfLoaderTask.then(
                 (_pdfDoc) => {
-                    this.onLoad();
+                    this.loaded.emit(null);
 
                     this.pdfDoc = _pdfDoc;
                     this.renderPage(this.pageToDisplay);
                     this.pageCount = _pdfDoc.numPages;
                 }, (error) => {
                     if (error) {
-                        this.onError(error);
+                        this.error.emit(error);
                     }
                 }
             );
@@ -251,17 +251,13 @@ export class PdfJsComponent implements OnInit, AfterViewInit {
         }
     }
 
-    //override it
-    public onLoad() { }
+    @Output() loaded: EventEmitter<any> = new EventEmitter();
 
-    //override it
-    public onProgress(progressData: PDFProgressData) { }
+    @Output() progress: EventEmitter<PDFProgressData> = new EventEmitter<PDFProgressData>();
 
-    //override it
-    public onError(error: any) { }
+    @Output() error: EventEmitter<any> = new EventEmitter();
 
-    //override it
-    public onPageRender() { }
+    @Output() pageRender: EventEmitter<any> = new EventEmitter();
 
 }
 
